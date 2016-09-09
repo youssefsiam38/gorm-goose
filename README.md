@@ -13,7 +13,7 @@ You can manage your database's evolution by creating incremental SQL or Go scrip
 
 This will install the `gorm-goose` binary to your `$GOPATH/bin` directory.
 
-You can also build gorm-goose into your own applications by importing `github.com/Altoros/gorm-goose/lib/goose`.
+You can also build gorm-goose into your own applications by importing `github.com/Altoros/gorm-goose/lib/gorm-goose`.
 
 # Usage
 
