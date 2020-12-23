@@ -5,8 +5,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/jinzhu/gorm"
 	"github.com/kylelemons/go-gypsy/yaml"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 // DBDriver encapsulates the info needed to work with
@@ -77,14 +78,14 @@ func newDBDriver(name, open string) DBDriver {
 
 	switch name {
 	case "postgres":
-		d.Import = "github.com/jinzhu/gorm/dialects/postgres"
+		d.Import = "gorm.io/driver/postgres"
 
 	case "mysql":
-		d.Import = "github.com/jinzhu/gorm/dialects/mysql"
+		d.Import = "gorm.io/driver/mysql"
 		d.OpenStr = d.OpenStr + "?charset=utf8&parseTime=True&loc=Local"
 
 	case "sqlite3":
-		d.Import = "github.com/jinzhu/gorm/dialects/sqlite"
+		d.Import = "gorm.io/driver/sqlite"
 	}
 
 	return d
@@ -100,7 +101,7 @@ func (drv *DBDriver) IsValid() bool {
 //
 // Callers must Close() the returned DB.
 func OpenDBFromDBConf(conf *DBConf) (*gorm.DB, error) {
-	db, err := gorm.Open(conf.Driver.Name, conf.Driver.OpenStr)
+	db, err := gorm.Open(postgres.Open(conf.Driver.OpenStr), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}

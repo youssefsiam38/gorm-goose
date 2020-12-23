@@ -12,10 +12,11 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"gorm.io/gorm"
+
+	_ "gorm.io/driver/mysql"
+	_ "gorm.io/driver/postgres"
+	_ "gorm.io/driver/sqlite"
 )
 
 var (
@@ -54,7 +55,6 @@ func RunMigrations(conf *DBConf, migrationsDir string, target int64) (err error)
 	if err != nil {
 		return err
 	}
-	defer db.Close()
 
 	return RunMigrationsOnDb(conf, migrationsDir, target, db)
 }
@@ -239,8 +239,7 @@ func createVersionTable(conf *DBConf, db *gorm.DB) error {
 	if txn.Error != nil {
 		return txn.Error
 	}
-
-	if err := txn.CreateTable(&MigrationRecord{}).Error; err != nil {
+	if err := txn.Migrator().CreateTable(&MigrationRecord{}); err != nil {
 		txn.Rollback()
 		return err
 	}
@@ -262,7 +261,6 @@ func GetDBVersion(conf *DBConf) (version int64, err error) {
 	if err != nil {
 		return -1, err
 	}
-	defer db.Close()
 
 	version, err = EnsureDBVersion(conf, db)
 	if err != nil {
@@ -377,7 +375,7 @@ var goMigrationTemplate = template.Must(template.New("goose.go-migration").Parse
 package main
 
 import (
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 // Up is executed when this migration is applied

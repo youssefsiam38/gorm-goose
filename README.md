@@ -156,7 +156,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 func Up_20130106222315(txn *gorm.DB) {

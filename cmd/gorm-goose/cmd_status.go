@@ -1,13 +1,14 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"path/filepath"
 	"time"
 
 	goose "github.com/Altoros/gorm-goose/lib/gorm-goose"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 var statusCmd = &Command{
@@ -42,7 +43,7 @@ func statusRun(cmd *Command, args ...string) {
 	if e != nil {
 		log.Fatal("couldn't open DB:", e)
 	}
-	defer db.Close()
+
 
 	// must ensure that the version table exists if we're running on a pristine DB
 	if _, e := goose.EnsureDBVersion(conf, db); e != nil {
@@ -61,7 +62,7 @@ func printMigrationStatus(db *gorm.DB, version int64, script string) {
 	row := goose.MigrationRecord{}
 	result := db.Where("version_id = ?", version).Order("t_stamp desc").First(&row)
 
-	if result.Error != nil && !result.RecordNotFound() {
+	if result.Error != nil && !errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		log.Fatal(result.Error)
 	}
 

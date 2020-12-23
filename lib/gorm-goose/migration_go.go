@@ -112,7 +112,6 @@ func main() {
 	if err != nil {
 		log.Fatal("failed to open DB:", err)
 	}
-	defer db.Close()
 
 	txn := db.Begin()
 	if txn.Error != nil {
