@@ -6,7 +6,9 @@ import (
 	"path/filepath"
 
 	"github.com/kylelemons/go-gypsy/yaml"
+	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
@@ -101,7 +103,8 @@ func (drv *DBDriver) IsValid() bool {
 //
 // Callers must Close() the returned DB.
 func OpenDBFromDBConf(conf *DBConf) (*gorm.DB, error) {
-	db, err := gorm.Open(postgres.Open(conf.Driver.OpenStr), &gorm.Config{})
+	dialector := GetDBDriverDialector(conf.Driver.Name, conf.Driver.OpenStr)
+	db, err := gorm.Open(dialector, &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}
@@ -114,4 +117,20 @@ func OpenDBFromDBConf(conf *DBConf) (*gorm.DB, error) {
 	}
 
 	return db, nil
+}
+
+func GetDBDriverDialector(DriverName string, OpenStr string) gorm.Dialector{
+
+	var dialector gorm.Dialector
+	switch DriverName {
+	case "postgres":
+		dialector = postgres.Open(OpenStr)
+
+	case "mysql":
+		dialector = mysql.Open(OpenStr)
+
+	case "sqlite3":
+		dialector = sqlite.Open(OpenStr)
+	}
+	return dialector
 }
