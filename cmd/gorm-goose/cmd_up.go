@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	goose "github.com/Altoros/gorm-goose/lib/gorm-goose"
+	goose "github.com/CloudInn/gorm-goose/lib/gorm-goose"
 )
 
 var upCmd = &Command{
