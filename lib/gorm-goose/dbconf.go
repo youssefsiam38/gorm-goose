@@ -101,7 +101,6 @@ func (drv *DBDriver) IsValid() bool {
 // OpenDBFromDBConf wraps database/sql.DB.Open() and configures
 // the newly opened DB based on the given DBConf.
 //
-// Callers must Close() the returned DB.
 func OpenDBFromDBConf(conf *DBConf) (*gorm.DB, error) {
 	dialector := GetDBDriverDialector(conf.Driver.Name, conf.Driver.OpenStr)
 	db, err := gorm.Open(dialector, &gorm.Config{})
