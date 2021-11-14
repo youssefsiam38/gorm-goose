@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"time"
 
-	goose "github.com/Altoros/gorm-goose/lib/gorm-goose"
+	goose "github.com/CloudInn/gorm-goose/lib/gorm-goose"
 	"gorm.io/gorm"
 )
 
@@ -43,7 +43,6 @@ func statusRun(cmd *Command, args ...string) {
 	if e != nil {
 		log.Fatal("couldn't open DB:", e)
 	}
-
 
 	// must ensure that the version table exists if we're running on a pristine DB
 	if _, e := goose.EnsureDBVersion(conf, db); e != nil {

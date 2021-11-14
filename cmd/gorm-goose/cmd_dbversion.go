@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	goose "github.com/Altoros/gorm-goose/lib/gorm-goose"
+	goose "github.com/CloudInn/gorm-goose/lib/gorm-goose"
 )
 
 var dbVersionCmd = &Command{

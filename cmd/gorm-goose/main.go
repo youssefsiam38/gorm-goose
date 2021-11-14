@@ -7,7 +7,7 @@ import (
 	"strings"
 	"text/template"
 
-	goose "github.com/Altoros/gorm-goose/lib/gorm-goose"
+	goose "github.com/CloudInn/gorm-goose/lib/gorm-goose"
 )
 
 // global options. available to any subcommands.
